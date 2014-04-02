@@ -1,4 +1,13 @@
-openresty
+Dockerfile for an OpenResty container
 =========
 
-Docker build of Openresty, GeoIP, and Luarocks
+The following components are installed and configured:
+
+* OpenResty
+* GeoIP
+* LuaRocks
+
+The Trusted Build on Docker Index can be found here:  
+
+[OpenResty on Docker Index](https://index.docker.io/u/switzer/docker-openresty/)
+
