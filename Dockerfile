@@ -1,5 +1,9 @@
-FROM        ubuntu:12.10
+FROM        ubuntu:13.10
 MAINTAINER  scott@switzer.org
+
+
+# Set the env variable DEBIAN_FRONTEND to noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 # Get latest version of all tools
 RUN apt-get -y update
@@ -10,7 +14,7 @@ RUN apt-get -y install geoip-bin geoip-database libgeoip-dev
 RUN cp /etc/GeoIP.conf.default /etc/GeoIP.conf
 
 # Install Openresty
-ENV OPENRESTY_VERSION 1.5.8.1
+ENV OPENRESTY_VERSION 1.5.11.1
 RUN apt-get -y install curl make
 RUN apt-get -y install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
 RUN curl http://openresty.org/download/ngx_openresty-$OPENRESTY_VERSION.tar.gz > /usr/src/ngx_openresty-$OPENRESTY_VERSION.tar.gz
