@@ -1,4 +1,4 @@
-FROM        ubuntu:12.10
+FROM        ubuntu:14.04
 MAINTAINER  scott@switzer.org
 
 # Get latest version of all tools
@@ -6,8 +6,13 @@ RUN apt-get -y update
 RUN apt-get -y upgrade
 
 # Install GeoIP
-RUN apt-get -y install geoip-bin geoip-database libgeoip-dev
-RUN cp /etc/GeoIP.conf.default /etc/GeoIP.conf
+RUN apt-get -y install make geoip-bin geoip-database libgeoip-dev lua5.2 luarocks zlib1g-dev
+WORKDIR /tmp
+RUN wget http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz
+RUN tar -zxvf GeoIP.tar.gz && cd GeoIP-1.4.8 7  && ./configure && make && make install
+
+RUN apt-get -y install geoip-bin geoip-database libgeoip-dev lua5.2 luarocks
+
 
 # Install Openresty
 ENV OPENRESTY_VERSION 1.5.8.1
@@ -25,18 +30,6 @@ RUN sed -i 's/mime.types;/mime.types;\n    variables_hash_max_size 1024;/' /usr/
 
 # Run Nginx in the foreground so supervisor can manage (the 'Docker Way')
 RUN sed -i 's/nobody;/nobody;\ndaemon off;/' /usr/local/openresty/nginx/conf/nginx.conf
-
-# Install Luarocks
-ENV LUAROCKS_VERSION 2.0.13
-RUN curl http://luarocks.org/releases/luarocks-$LUAROCKS_VERSION.tar.gz > /usr/src/luarocks-$LUAROCKS_VERSION.tar.gz
-RUN cd /usr/src && tar xzvf luarocks-$LUAROCKS_VERSION.tar.gz
-RUN cd /usr/src/luarocks-$LUAROCKS_VERSION ;\
-    ./configure --prefix=/usr/local/openresty/luajit \
-        --with-lua=/usr/local/openresty/luajit/ \
-        --lua-suffix=jit-2.1.0-alpha \
-        --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 ;\
-    make ;\
-    make install
 
 # Add GeoIP Cron
 RUN apt-get -y install cron
