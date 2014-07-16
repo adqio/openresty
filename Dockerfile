@@ -33,6 +33,10 @@ RUN apt-get -y install cron
 ADD geoip_cron /var/spool/cron/crontabs/ root
 
 # Add supervisor to manage cron and nginx
+RUN apt-get -y install supervisor
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Open HTTP and SSL ports
 EXPOSE 80 443
+
+CMD ["/usr/bin/supervisord"]
