@@ -1,4 +1,4 @@
-FROM        ubuntu:12.10
+FROM        ubuntu:12.04
 MAINTAINER  scott@switzer.org
 
 # Get latest version of all tools
