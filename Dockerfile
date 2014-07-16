@@ -11,17 +11,14 @@ WORKDIR /tmp
 RUN wget http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz
 RUN tar -zxvf GeoIP.tar.gz && cd GeoIP-1.4.8 7  && ./configure && make && make install
 
-RUN apt-get -y install geoip-bin geoip-database libgeoip-dev lua5.2 luarocks
-
 
 # Install Openresty
 ENV OPENRESTY_VERSION 1.5.8.1
-RUN apt-get -y install curl make
-RUN apt-get -y install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
+RUN apt-get -y install curl libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
 RUN curl http://openresty.org/download/ngx_openresty-$OPENRESTY_VERSION.tar.gz > /usr/src/ngx_openresty-$OPENRESTY_VERSION.tar.gz
 RUN cd /usr/src && tar xzf ngx_openresty-$OPENRESTY_VERSION.tar.gz
 RUN cd /usr/src/ngx_openresty-$OPENRESTY_VERSION;\
-    ./configure --with-http_geoip_module --with-http_stub_status_module;\
+    ./configure --with-luajit --with-http_geoip_module --with-http_stub_status_module;\
     make;\
     make install
 
