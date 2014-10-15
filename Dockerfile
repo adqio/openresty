@@ -6,17 +6,24 @@ RUN apt-get -y update
 RUN apt-get -y upgrade
 
 # Install GeoIP
-RUN apt-get -y install geoip-bin geoip-database libgeoip-dev
+RUN apt-get -y install geoip-bin geoip-database libgeoip-dev git-core dh-autoreconf
 RUN cp /etc/GeoIP.conf.default /etc/GeoIP.conf
+
+#Install GeoIP2
+
+WORKDIR /usr/src
+RUN git clone --recursive https://github.com/maxmind/libmaxminddb
+RUN cd libmaxminddb && ./bootstrap && ./configure && make check && make install && ldconfig
+RUN git clone https://github.com/leev/ngx_http_geoip2_module.git 
 
 # Install Openresty
 ENV OPENRESTY_VERSION 1.5.8.1
-RUN apt-get -y install curl make
+RUN apt-get -y install curl make automake autoconf libtool
 RUN apt-get -y install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
 RUN curl http://openresty.org/download/ngx_openresty-$OPENRESTY_VERSION.tar.gz > /usr/src/ngx_openresty-$OPENRESTY_VERSION.tar.gz
 RUN cd /usr/src && tar xzf ngx_openresty-$OPENRESTY_VERSION.tar.gz
 RUN cd /usr/src/ngx_openresty-$OPENRESTY_VERSION;\
-    ./configure --with-http_geoip_module --with-http_stub_status_module;\
+    ./configure --with-http_geoip_module --add-module=/usr/src/ngx_http_geoip2_module --with-http_stub_status_module;\
     make;\
     make install
 
