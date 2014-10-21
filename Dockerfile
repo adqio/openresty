@@ -1,9 +1,8 @@
-FROM        ubuntu:12.04
+FROM       debian:wheezy 
 MAINTAINER  scott@switzer.org
 
 # Get latest version of all tools
-RUN apt-get -y update
-RUN apt-get -y upgrade
+RUN apt-get -y update && apt-get -y upgrade
 
 # Install GeoIP
 RUN apt-get -y install geoip-bin geoip-database libgeoip-dev git-core dh-autoreconf
