@@ -17,7 +17,7 @@ RUN git clone https://github.com/leev/ngx_http_geoip2_module.git
 
 RUN wget https://github.com/maxmind/geoipupdate/releases/download/v2.0.2/geoipupdate-2.0.2.tar.gz
 RUN tar xzvf geoipupdate-2.0.2.tar.gz && cd geoipupdate-2.0.2 && ./configure && make  && make install
-
+RUN git clone https://github.com/openresty/lua-resty-redis.git
 # Install Openresty
 ENV OPENRESTY_VERSION 1.5.8.1
 RUN apt-get -y install curl make automake autoconf libtool
