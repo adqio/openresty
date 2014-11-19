@@ -47,6 +47,12 @@ RUN cd /usr/src/luarocks-$LUAROCKS_VERSION ;\
     make ;\
     make install
 
+#Install RabbitMQ libs for the repeater to work
+
+RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.5.2/rabbitmq-c-0.5.2.tar.gz && tar zxvf rabbitmq-c-0.5.2.tar.gz && cd rabbitmq-c-0.5.2 && ./configure && make && make install
+
+#Copy latest version of redis lua into place
+
 RUN cp /usr/src/lua-resty-redis/lib/resty/redis.lua /usr/local/openresty/lualib/resty/redis.lua
 
 
