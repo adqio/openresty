@@ -1,11 +1,12 @@
 FROM       debian:wheezy 
-MAINTAINER  scott@switzer.org
+MAINTAINER  afsheen@adq.io
 
+ENV DEBIAN_FRONTEND noninteractive
 # Get latest version of all tools
 RUN apt-get -y update && apt-get -y upgrade
 
 # Install GeoIP
-RUN apt-get -y install geoip-database libgeoip-dev git-core dh-autoreconf wget zlib1g-dev libcurl4-openssl-dev
+RUN apt-get -y install geoip-database libgeoip-dev git-core dh-autoreconf wget zlib1g-dev libcurl4-openssl-dev curl make automake autoconf libtool libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
 RUN cp /etc/GeoIP.conf.default /etc/GeoIP.conf
 
 #Install GeoIP2
@@ -20,8 +21,7 @@ RUN tar xzvf geoipupdate-2.0.2.tar.gz && cd geoipupdate-2.0.2 && ./configure && 
 RUN git clone https://github.com/openresty/lua-resty-redis.git
 # Install Openresty
 ENV OPENRESTY_VERSION 1.5.8.1
-RUN apt-get -y install curl make automake autoconf libtool
-RUN apt-get -y install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
+
 RUN curl http://openresty.org/download/ngx_openresty-$OPENRESTY_VERSION.tar.gz > /usr/src/ngx_openresty-$OPENRESTY_VERSION.tar.gz
 RUN cd /usr/src && tar xzf ngx_openresty-$OPENRESTY_VERSION.tar.gz
 RUN cd /usr/src/ngx_openresty-$OPENRESTY_VERSION;\
@@ -47,11 +47,8 @@ RUN cd /usr/src/luarocks-$LUAROCKS_VERSION ;\
     make ;\
     make install
 
-# Add GeoIP Cron
-RUN apt-get -y install cron
-ADD geoip_cron /var/spool/cron/crontabs/ root
+RUN cp /usr/src/lua-resty-redis/lib/resty/redis.lua /usr/local/openresty/lualib/resty/redis.lua
 
-# Add supervisor to manage cron and nginx
 
 # Open HTTP and SSL ports
 EXPOSE 80 443
