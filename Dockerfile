@@ -17,6 +17,8 @@ RUN cd libmaxminddb && ./bootstrap && ./configure && make check && make install 
 RUN git clone https://github.com/leev/ngx_http_geoip2_module.git 
 
 RUN wget https://github.com/maxmind/geoipupdate/releases/download/v2.0.2/geoipupdate-2.0.2.tar.gz
+RUN wget https://github.com/alanxz/rabbitmq-c/releases/download/v0.5.2/rabbitmq-c-0.5.2.tar.gz && tar zxvf rabbitmq-c-0.5.2.tar.gz && cd rabbitmq-c-0.5.2 && ./configure && make && make install
+
 RUN tar xzvf geoipupdate-2.0.2.tar.gz && cd geoipupdate-2.0.2 && ./configure && make  && make install
 RUN git clone https://github.com/openresty/lua-resty-redis.git
 # Install Openresty
