@@ -38,7 +38,7 @@ RUN sed -i 's/mime.types;/mime.types;\n    variables_hash_max_size 1024;/' /usr/
 RUN sed -i 's/nobody;/nobody;\ndaemon off;/' /usr/local/openresty/nginx/conf/nginx.conf
 
 # Install Luarocks
-ENV LUAROCKS_VERSION 2.0.13
+ENV LUAROCKS_VERSION 2.2.0
 RUN curl http://luarocks.org/releases/luarocks-$LUAROCKS_VERSION.tar.gz > /usr/src/luarocks-$LUAROCKS_VERSION.tar.gz
 RUN cd /usr/src && tar xzvf luarocks-$LUAROCKS_VERSION.tar.gz
 RUN cd /usr/src/luarocks-$LUAROCKS_VERSION ;\
