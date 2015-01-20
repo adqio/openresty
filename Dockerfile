@@ -1,4 +1,4 @@
-FROM       debian:wheezy 
+FROM       debian:jessie
 MAINTAINER  afsheen@adq.io
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -7,7 +7,6 @@ RUN apt-get -y update && apt-get -y upgrade
 
 # Install GeoIP
 RUN apt-get -y install geoip-database libgeoip-dev git-core dh-autoreconf wget zlib1g-dev libcurl4-openssl-dev curl make automake autoconf libtool libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl
-RUN cp /etc/GeoIP.conf.default /etc/GeoIP.conf
 
 #Install GeoIP2
 
@@ -38,16 +37,16 @@ RUN sed -i 's/mime.types;/mime.types;\n    variables_hash_max_size 1024;/' /usr/
 RUN sed -i 's/nobody;/nobody;\ndaemon off;/' /usr/local/openresty/nginx/conf/nginx.conf
 
 # Install Luarocks
-ENV LUAROCKS_VERSION 2.2.0
-RUN curl http://luarocks.org/releases/luarocks-$LUAROCKS_VERSION.tar.gz > /usr/src/luarocks-$LUAROCKS_VERSION.tar.gz
-RUN cd /usr/src && tar xzvf luarocks-$LUAROCKS_VERSION.tar.gz
-RUN cd /usr/src/luarocks-$LUAROCKS_VERSION ;\
-    ./configure --prefix=/usr/local/openresty/luajit \
-        --with-lua=/usr/local/openresty/luajit/ \
-        --lua-suffix=jit-2.1.0-alpha \
-        --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 ;\
-    make ;\
-    make install
+# ENV LUAROCKS_VERSION 2.2.0
+# RUN curl http://luarocks.org/releases/luarocks-$LUAROCKS_VERSION.tar.gz > /usr/src/luarocks-$LUAROCKS_VERSION.tar.gz
+# RUN cd /usr/src && tar xzvf luarocks-$LUAROCKS_VERSION.tar.gz
+# RUN cd /usr/src/luarocks-$LUAROCKS_VERSION ;\
+#     ./configure --prefix=/usr/local/openresty/luajit \
+#         --with-lua=/usr/local/openresty/luajit/ \
+#         --lua-suffix=jit-2.1.0-alpha \
+#         --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 ;\
+#     make ;\
+#     make install
 
 #Install RabbitMQ libs for the repeater to work
 
